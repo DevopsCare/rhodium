@@ -9,3 +9,12 @@ variable "s3_bucket_path" {
   type        = string
   default     = "packages/rhodium/rhodium.zip"
 }
+
+variable "domain" {
+  type    = string
+  default = ""
+}
+
+variable "enable_apigw_domain" {
+  default = true
+}
