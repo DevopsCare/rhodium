@@ -2,6 +2,11 @@ output "worker_role_arn" {
   value = module.lambda_worker.role_arn
 }
 
-output slack_events_api_callack {
-  value = var.enable_apigw_domain ? "https://${aws_api_gateway_domain_name.rhodium[0].domain_name}/" : aws_api_gateway_deployment.current.invoke_url
+output "slack_events_endpoint" {
+  value = var.enable_apigw_domain ? "https://${aws_api_gateway_domain_name.rhodium[0].domain_name}/slack/events" : "${aws_api_gateway_deployment.current.invoke_url}current/slack/events"
+}
+
+
+output "slack_interactive_components_endpoint" {
+  value = var.enable_apigw_domain ? "https://${aws_api_gateway_domain_name.rhodium[0].domain_name}/slack/interactive_components" : "${aws_api_gateway_deployment.current.invoke_url}current/slack/interactive_components"
 }
