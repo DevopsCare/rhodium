@@ -94,7 +94,7 @@ resource "aws_cloudwatch_event_rule" "lambda_worker" {
   name        = "lambda-rhodium-worker"
   description = "Trigger Rhodium Worker"
 
-  schedule_expression = "cron(*/2 * * * ? *)"
+  schedule_expression = "rate(1 minute)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_worker" {
