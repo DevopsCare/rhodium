@@ -21,9 +21,13 @@ module "lambda_worker" {
   #source_path = "${path.root}/../../cloud-scheduler/src"
   s3_bucket_name = var.s3_bucket_name
   s3_bucket_key  = var.s3_bucket_path
+
+  environment = {
+    variables = merge(var.environment, var.environment_extra)
+  }
 }
 
-data aws_iam_policy_document lambda_worker_extra {
+data "aws_iam_policy_document" "lambda_worker_extra" {
   statement {
     effect    = "Allow"
     actions   = [
@@ -34,7 +38,11 @@ data aws_iam_policy_document lambda_worker_extra {
       "dynamodb:BatchWriteItem",
       "dynamodb:Scan"
     ]
-    resources = [aws_dynamodb_table.rhodium_environments.arn]
+    resources = [
+      aws_dynamodb_table.rhodium_environments.arn,
+      aws_dynamodb_table.rhodium_actions.arn,
+      aws_dynamodb_table.rhodium_schedules.arn
+    ]
   }
   statement {
     effect    = "Allow"
@@ -81,3 +89,25 @@ resource "aws_cloudwatch_log_group" "lambda_worker" {
   name              = "/aws/lambda/${module.lambda_worker.function_name}"
   retention_in_days = 3
 }
+
+resource "aws_cloudwatch_event_rule" "lambda_worker" {
+  name        = "lambda-rhodium-worker"
+  description = "Trigger Rhodium Worker"
+
+  schedule_expression = "cron(*/2 * * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "lambda_worker" {
+    rule = aws_cloudwatch_event_rule.lambda_worker.name
+    target_id = "cadmium3-rhodium-worker"
+    arn = module.lambda_worker.function_arn
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_rhodium_worker" {
+    statement_id = "AllowExecutionFromCloudWatch"
+    action = "lambda:InvokeFunction"
+    function_name = module.lambda_worker.function_name
+    principal = "events.amazonaws.com"
+    source_arn = aws_cloudwatch_event_rule.lambda_worker.arn
+}
+

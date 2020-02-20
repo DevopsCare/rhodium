@@ -5,8 +5,8 @@ resource "aws_secretsmanager_secret" "rhodium" {
 variable "rhodium_secrets" {
   default = {
     "api.slack_signing_secret" = "none"
-    "notificator.slack_bot_token" = "none"
-    "notificator.slack_channel" = "none"
+    "slackbot.slack_bot_token" = "none"
+    "slackbot.slack_channel" = "none"
   }
 
   type = map

@@ -19,6 +19,10 @@ module "lambda_api" {
   #source_path = "${path.root}/../../cloud-scheduler/src"
   s3_bucket_name = var.s3_bucket_name
   s3_bucket_key  = var.s3_bucket_path
+
+  environment = {
+    variables = merge(var.environment, var.environment_extra)
+  }
 }
 
 data aws_iam_policy_document lambda_api {
