@@ -1,10 +1,9 @@
 module "lambda_api" {
-  #source = "github.com/claranet/terraform-aws-lambda"
   source = "./modules/terraform-aws-lambda"
 
   function_name                  = "cadmium3-rhodium-api"
   description                    = "Rhodium Infrastructure API"
-  handler                        = "rhodium.api.handle_request"
+  handler                        = "wsgi_handler.handler"
   runtime                        = "python3.8"
   timeout                        = 30
   memory_size                    = 512
@@ -15,8 +14,6 @@ module "lambda_api" {
     json = data.aws_iam_policy_document.lambda_api.json
   }
 
-  // Specify a file or directory for the source code.
-  #source_path = "${path.root}/../../cloud-scheduler/src"
   s3_bucket_name = var.s3_bucket_name
   s3_bucket_key  = var.s3_bucket_path
 

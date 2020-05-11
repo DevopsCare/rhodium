@@ -1,5 +1,4 @@
 module "lambda_worker" {
-  #source = "github.com/claranet/terraform-aws-lambda"
   source = "./modules/terraform-aws-lambda"
 
   function_name                  = "cadmium3-rhodium-worker"
@@ -17,8 +16,6 @@ module "lambda_worker" {
     json = data.aws_iam_policy_document.lambda_worker_extra.json
   }
 
-  // Specify a file or directory for the source code.
-  #source_path = "${path.root}/../../cloud-scheduler/src"
   s3_bucket_name = var.s3_bucket_name
   s3_bucket_key  = var.s3_bucket_path
 
