@@ -26,8 +26,8 @@ module "lambda_worker" {
 
 data "aws_iam_policy_document" "lambda_worker_extra" {
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "dynamodb:GetItem",
       "dynamodb:DeleteItem",
       "dynamodb:UpdateItem",
@@ -42,20 +42,23 @@ data "aws_iam_policy_document" "lambda_worker_extra" {
     ]
   }
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:DescribeInstances",
       "ec2:DescribeTags",
       "rds:StopDBInstance",
       "rds:StartDBInstance",
+      "rds:DescribeDBClusters",
+      "rds:DescribeDBInstances",
+      "rds:ListTagsForResource",
     ]
     resources = ["*"]
   }
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
     ]
@@ -64,8 +67,8 @@ data "aws_iam_policy_document" "lambda_worker_extra" {
     ]
   }
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "autoscaling:DescribeTags",
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:DescribeAutoScalingInstances",
@@ -95,16 +98,16 @@ resource "aws_cloudwatch_event_rule" "lambda_worker" {
 }
 
 resource "aws_cloudwatch_event_target" "lambda_worker" {
-    rule = aws_cloudwatch_event_rule.lambda_worker.name
-    target_id = "cadmium3-rhodium-worker"
-    arn = module.lambda_worker.function_arn
+  rule      = aws_cloudwatch_event_rule.lambda_worker.name
+  target_id = "cadmium3-rhodium-worker"
+  arn       = module.lambda_worker.function_arn
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_rhodium_worker" {
-    statement_id = "AllowExecutionFromCloudWatch"
-    action = "lambda:InvokeFunction"
-    function_name = module.lambda_worker.function_name
-    principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.lambda_worker.arn
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_worker.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.lambda_worker.arn
 }
 
