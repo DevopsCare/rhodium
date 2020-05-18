@@ -8,5 +8,5 @@ output "slack_events_endpoint" {
 
 
 output "slack_interactive_components_endpoint" {
-  value = var.enable_apigw_domain ? "https://${aws_api_gateway_domain_name.rhodium[0].domain_name}/slack/interactive_components" : "${aws_api_gateway_deployment.current.invoke_url}current/slack/interactive_components"
+  value = var.enable_apigw_domain ? "https://${aws_api_gateway_domain_name.rhodium[0].domain_name}/slack/interactive-endpoint" : "${aws_api_gateway_deployment.current.invoke_url}current/slack/interactive-endpoint"
 }
