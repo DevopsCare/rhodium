@@ -79,6 +79,21 @@ resource "aws_dynamodb_table_item" "rhodium_schedule_weekdays_new_york_plus_riga
   ITEM
 }
 
+resource "aws_dynamodb_table_item" "rhodium_schedule_us_pacific" {
+  table_name = aws_dynamodb_table.rhodium_schedules.name
+  hash_key   = aws_dynamodb_table.rhodium_schedules.hash_key
+
+  item = <<-ITEM
+    {
+      "name": {"S": "us-pacific"},
+      "timezone": {"S": "US/Pacific"},
+      "type": {"S": "regular"},
+      "start_cron": {"S": "0 9 * * mon-fri"},
+      "stop_cron": {"S": "0 19 * * mon-fri"}
+    }
+  ITEM
+}
+
 resource "aws_dynamodb_table_item" "rhodium_schedule_2h" {
   table_name = aws_dynamodb_table.rhodium_schedules.name
   hash_key   = aws_dynamodb_table.rhodium_schedules.hash_key
