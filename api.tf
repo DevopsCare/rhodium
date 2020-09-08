@@ -42,8 +42,8 @@ module "lambda_api" {
 
 data aws_iam_policy_document lambda_api {
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "dynamodb:GetItem",
       "dynamodb:PutItem",
       "dynamodb:Scan",
@@ -54,8 +54,8 @@ data aws_iam_policy_document lambda_api {
     ]
   }
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
     ]
@@ -78,7 +78,11 @@ resource "aws_api_gateway_stage" "current" {
 }
 
 resource "aws_api_gateway_deployment" "current" {
-  depends_on = [aws_api_gateway_integration.integration]
+  depends_on = [
+    aws_api_gateway_integration.integration,
+    aws_api_gateway_integration.start_env_integration,
+    aws_api_gateway_integration.stop_env_integration,
+  ]
 
   rest_api_id       = aws_api_gateway_rest_api.rhodium.id
   stage_description = "Deployed at ${timestamp()}"
@@ -94,6 +98,30 @@ resource "aws_api_gateway_resource" "resource" {
   rest_api_id = aws_api_gateway_rest_api.rhodium.id
 }
 
+resource "aws_api_gateway_resource" "start_env_parent" {
+  path_part   = "start"
+  parent_id   = aws_api_gateway_rest_api.rhodium.root_resource_id
+  rest_api_id = aws_api_gateway_rest_api.rhodium.id
+}
+
+resource "aws_api_gateway_resource" "start_env" {
+  path_part   = "{proxy+}"
+  parent_id   = aws_api_gateway_resource.start_env_parent.id
+  rest_api_id = aws_api_gateway_rest_api.rhodium.id
+}
+
+resource "aws_api_gateway_resource" "stop_env_parent" {
+  path_part   = "stop"
+  parent_id   = aws_api_gateway_rest_api.rhodium.root_resource_id
+  rest_api_id = aws_api_gateway_rest_api.rhodium.id
+}
+
+resource "aws_api_gateway_resource" "stop_env" {
+  path_part   = "{proxy+}"
+  parent_id   = aws_api_gateway_resource.stop_env_parent.id
+  rest_api_id = aws_api_gateway_rest_api.rhodium.id
+}
+
 resource "aws_api_gateway_method" "method" {
   rest_api_id   = aws_api_gateway_rest_api.rhodium.id
   resource_id   = aws_api_gateway_resource.resource.id
@@ -101,10 +129,42 @@ resource "aws_api_gateway_method" "method" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method" "start_env" {
+  rest_api_id   = aws_api_gateway_rest_api.rhodium.id
+  resource_id   = aws_api_gateway_resource.start_env.id
+  http_method   = "PUT"
+  authorization = "AWS_IAM"
+}
+
+resource "aws_api_gateway_method" "stop_env" {
+  rest_api_id   = aws_api_gateway_rest_api.rhodium.id
+  resource_id   = aws_api_gateway_resource.stop_env.id
+  http_method   = "PUT"
+  authorization = "AWS_IAM"
+}
+
 resource "aws_api_gateway_integration" "integration" {
   rest_api_id             = aws_api_gateway_rest_api.rhodium.id
   resource_id             = aws_api_gateway_resource.resource.id
   http_method             = aws_api_gateway_method.method.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = module.lambda_api.function_invoke_arn
+}
+
+resource "aws_api_gateway_integration" "start_env_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rhodium.id
+  resource_id             = aws_api_gateway_resource.start_env.id
+  http_method             = aws_api_gateway_method.start_env.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = module.lambda_api.function_invoke_arn
+}
+
+resource "aws_api_gateway_integration" "stop_env_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.rhodium.id
+  resource_id             = aws_api_gateway_resource.stop_env.id
+  http_method             = aws_api_gateway_method.stop_env.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = module.lambda_api.function_invoke_arn
