@@ -20,3 +20,8 @@ data "aws_region" "current" {}
 data "aws_route53_zone" "domain" {
   name = var.domain
 }
+
+provider aws {
+  alias  = "aws-us-east-1"
+  region = "us-east-1"
+}
