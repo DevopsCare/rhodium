@@ -19,7 +19,7 @@ resource "aws_acm_certificate" "rhodium" {
 
   domain_name       = "rhodium.${data.aws_route53_zone.domain.name}"
   validation_method = "DNS"
-  provider          = "aws.aws-us-east-1"
+  provider          = aws.aws-us-east-1
 }
 
 resource "aws_route53_record" "cert_validation" {
