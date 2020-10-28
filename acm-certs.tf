@@ -37,5 +37,5 @@ resource "aws_acm_certificate_validation" "api" {
 
   certificate_arn         = aws_acm_certificate.rhodium[0].arn
   validation_record_fqdns = [aws_route53_record.cert_validation[0].fqdn]
-  provider                = "aws.aws-us-east-1"
+  provider                = aws.aws-us-east-1
 }
