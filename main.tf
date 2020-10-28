@@ -22,6 +22,7 @@ data "aws_route53_zone" "domain" {
 }
 
 provider aws {
-  alias  = "aws-us-east-1"
-  region = "us-east-1"
+  version = "~>3" # tested with v3.12.0
+  alias   = "aws-us-east-1"
+  region  = "us-east-1"
 }
