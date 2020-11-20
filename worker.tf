@@ -17,13 +17,12 @@
 module "lambda_worker" {
   source = "./modules/terraform-aws-lambda"
 
-  function_name                  = "cadmium3-rhodium-worker"
-  description                    = "Rhodium Infrastructure Worker"
-  handler                        = "rhodium.main.main_cycle"
-  runtime                        = "python3.8"
-  timeout                        = 300
-  memory_size                    = 512
-  reserved_concurrent_executions = 1
+  function_name = "cadmium3-rhodium-worker"
+  description   = "Rhodium Infrastructure Worker"
+  handler       = "rhodium.main.main_cycle"
+  runtime       = "python3.8"
+  timeout       = 300
+  memory_size   = 512
 
   lambda_at_edge = false
 

@@ -15,10 +15,9 @@
 */
 
 resource "aws_dynamodb_table" "rhodium_environments" {
-  name           = "rhodium_environments"
-  read_capacity  = 5
-  write_capacity = 5
-  hash_key       = "name"
+  name         = "rhodium_environments"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "name"
 
   attribute {
     name = "name"
@@ -27,10 +26,9 @@ resource "aws_dynamodb_table" "rhodium_environments" {
 }
 
 resource "aws_dynamodb_table" "rhodium_schedules" {
-  name           = "rhodium_schedules"
-  read_capacity  = 5
-  write_capacity = 5
-  hash_key       = "name"
+  name         = "rhodium_schedules"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "name"
 
   attribute {
     name = "name"
@@ -39,10 +37,9 @@ resource "aws_dynamodb_table" "rhodium_schedules" {
 }
 
 resource "aws_dynamodb_table" "rhodium_actions" {
-  name           = "rhodium_actions"
-  read_capacity  = 5
-  write_capacity = 5
-  hash_key       = "action_id"
+  name         = "rhodium_actions"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "action_id"
 
   attribute {
     name = "action_id"
