@@ -148,7 +148,6 @@ variable "tracing_config" {
   default = null
 }
 
-
 variable "vpc_config" {
   type = object({
     security_group_ids = list(string)

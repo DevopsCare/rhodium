@@ -25,6 +25,7 @@ module "lambda_worker" {
   memory_size   = 512
 
   lambda_at_edge = false
+  vpc_config     = var.vpc_config
 
   // Attach a policy.
   policy = {

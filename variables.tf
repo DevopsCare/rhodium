@@ -54,3 +54,11 @@ variable "environment" {
 variable "environment_extra" {
   default = {}
 }
+
+variable "vpc_config" {
+  type = object({
+    security_group_ids = list(string)
+    subnet_ids         = list(string)
+  })
+  default = null
+}
