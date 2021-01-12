@@ -64,6 +64,7 @@ data "aws_iam_policy_document" "lambda_worker_extra" {
       "ec2:StopInstances",
       "ec2:DescribeInstances",
       "ec2:DescribeTags",
+
       "rds:StopDBInstance",
       "rds:StopDBCluster",
       "rds:StartDBInstance",
@@ -71,6 +72,16 @@ data "aws_iam_policy_document" "lambda_worker_extra" {
       "rds:DescribeDBClusters",
       "rds:DescribeDBInstances",
       "rds:ListTagsForResource",
+
+      "autoscaling:DescribeTags",
+      "autoscaling:DescribeLaunchConfigurations",
+      "autoscaling:DescribeAutoScalingInstances",
+      "autoscaling:DescribeAutoScalingGroups",
+      "autoscaling:UpdateAutoScalingGroup",
+      "autoscaling:TerminateInstanceInAutoScalingGroup",
+      "autoscaling:SetDesiredCapacity",
+
+      "eks:DescribeCluster",
     ]
     resources = ["*"]
   }
@@ -82,21 +93,6 @@ data "aws_iam_policy_document" "lambda_worker_extra" {
     ]
     resources = [
       aws_secretsmanager_secret.rhodium.arn
-    ]
-  }
-  statement {
-    effect = "Allow"
-    actions = [
-      "autoscaling:DescribeTags",
-      "autoscaling:DescribeLaunchConfigurations",
-      "autoscaling:DescribeAutoScalingInstances",
-      "autoscaling:DescribeAutoScalingGroups",
-      "autoscaling:UpdateAutoScalingGroup",
-      "autoscaling:TerminateInstanceInAutoScalingGroup",
-      "autoscaling:SetDesiredCapacity",
-    ]
-    resources = [
-      "*"
     ]
   }
 }

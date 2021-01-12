@@ -21,7 +21,7 @@ variable "s3_bucket_name" {
 }
 
 variable "s3_bucket_path" {
-  description = "Rhodiume package - path of s3 bucket"
+  description = "Rhodium package - path of s3 bucket"
   type        = string
   default     = "rhodium-latest.zip"
 }
