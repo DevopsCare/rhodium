@@ -30,7 +30,7 @@ module "lambda_api" {
     json = data.aws_iam_policy_document.lambda_api.json
   }
 
-  s3_bucket_name = var.s3_bucket_name
+  s3_bucket_name = "${var.s3_bucket_prefix}-${data.aws_region.current.id}"
   s3_bucket_key  = var.s3_bucket_path
 
   environment = {
@@ -38,7 +38,7 @@ module "lambda_api" {
   }
 }
 
-data aws_iam_policy_document lambda_api {
+data "aws_iam_policy_document" "lambda_api" {
   statement {
     effect = "Allow"
     actions = [

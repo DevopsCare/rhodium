@@ -32,7 +32,7 @@ module "lambda_worker" {
     json = data.aws_iam_policy_document.lambda_worker_extra.json
   }
 
-  s3_bucket_name = var.s3_bucket_name
+  s3_bucket_name = "${var.s3_bucket_prefix}-${data.aws_region.current.id}"
   s3_bucket_key  = var.s3_bucket_path
 
   environment = {

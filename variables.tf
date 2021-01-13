@@ -14,8 +14,8 @@
 * limitations under the License.
 */
 
-variable "s3_bucket_name" {
-  description = "Rhodium package - name of s3 bucket"
+variable "s3_bucket_prefix" {
+  description = "Rhodium package - prefix of region-specific S3 bucket distro"
   type        = string
   default     = "cadmium3-rhodium-distribution"
 }
