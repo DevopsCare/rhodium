@@ -73,6 +73,11 @@ data "aws_iam_policy_document" "lambda_worker_extra" {
       "rds:DescribeDBInstances",
       "rds:ListTagsForResource",
 
+      "kinesisanalytics:ListApplications",
+      "kinesisanalytics:ListTagsForResource",
+      "kinesisanalytics:StartApplication",
+      "kinesisanalytics:StopApplication",
+
       "autoscaling:DescribeTags",
       "autoscaling:DescribeLaunchConfigurations",
       "autoscaling:DescribeAutoScalingInstances",
