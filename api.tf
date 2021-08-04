@@ -17,13 +17,12 @@
 module "lambda_api" {
   source = "./modules/terraform-aws-lambda"
 
-  function_name                  = "cadmium3-rhodium-api"
-  description                    = "Rhodium Infrastructure API"
-  handler                        = "wsgi_handler.handler"
-  runtime                        = "python3.8"
-  timeout                        = 30
-  memory_size                    = 512
-  reserved_concurrent_executions = 1
+  function_name = "cadmium3-rhodium-api"
+  description   = "Rhodium Infrastructure API"
+  handler       = "wsgi_handler.handler"
+  runtime       = "python3.8"
+  timeout       = 30
+  memory_size   = 512
 
   // Attach a policy.
   policy = {

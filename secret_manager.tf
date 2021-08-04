@@ -22,10 +22,10 @@ variable "rhodium_secrets" {
   default = {
     "api.slack_signing_secret" = "none"
     "slackbot.slack_bot_token" = "none"
-    "slackbot.slack_channel" = "none"
+    "slackbot.slack_channel"   = "none"
   }
 
-  type = map
+  type = map(any)
 }
 
 resource "aws_secretsmanager_secret_version" "rhodium" {
