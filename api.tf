@@ -20,7 +20,7 @@ module "lambda_api" {
   function_name = "cadmium3-rhodium-api"
   description   = "Rhodium Infrastructure API"
   handler       = "wsgi_handler.handler"
-  runtime       = "python3.8"
+  runtime       = "python3.9"
   timeout       = 30
   memory_size   = 512
 

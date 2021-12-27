@@ -20,7 +20,7 @@ module "lambda_worker" {
   function_name                  = "cadmium3-rhodium-worker"
   description                    = "Rhodium Infrastructure Worker"
   handler                        = "rhodium.main.main_cycle"
-  runtime                        = "python3.8"
+  runtime                        = "python3.9"
   timeout                        = 300
   memory_size                    = 512
   reserved_concurrent_executions = 1
